@@ -1,4 +1,4 @@
-console.output = [];
+console.output = ["VWPC/0.0.1", "> Loading util.js", "> Loading boot.js<br>"];
 
 var _log = console.log,
     _warn = console.warn,
