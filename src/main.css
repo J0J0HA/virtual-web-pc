@@ -1,16 +1,57 @@
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   padding: 0px;
   margin: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-#output {
-
-}
-
-#output .console {
+.console {
+  width: 100%;
+  height: 100%;
+  padding: 5px;
   background-color: black;
+  font-family: monospace;
+  color: white;
+  font-size: 15px;
 }
 
-#output .console => body {
+#console-input > input {
   background-color: black;
+  font-family: monospace;
+  color: white;
+  font-size: 15px;
+  border: none;
+  caret-color: transparent !important;
+}
+
+#console-input > input:focus {
+  outline: none;
+}
+
+.cursor {
+  position: relative;
+  left: -3px;
+}
+
+.blink {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1
+  }
+
+  80% {
+    opacity: 0
+  }
 }

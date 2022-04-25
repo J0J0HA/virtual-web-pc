@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title id="btop-title">Please wait... | VWPC</title>
+    <title>Please wait... | VWPC</title>
     <link rel="stylesheet" type="text/css" href="src/main.css">
   </head>
-  <body>
-    <div id="output" data-display="console" class="console">
+  <body onfocus="update_console()" onclick="update_console()">
+    <div id="console-output" class="console">
       VWPC/0.0.1<br>
-      > Loading 'util.js'...<br>
-      > Loading 'boot.js'...
+      > Loading...
+      <noscript class="console">
+        > It seems that you are using a browser that doesn't support JavaScript.<br>
+        Please try updating your browser or using another one.
+      </noscript>
     </div>
-    <noscript class="console">
-      > It seems that you are using a browser that doesn't support JavaScript.<br>
-      Please try updating your browser or using another one.
-    </noscript>
     <script src="src/BIOS/util.js"></script>
     <script src="src/BIOS/boot.js"></script>
   </body>

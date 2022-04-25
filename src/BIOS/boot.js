@@ -1,1 +1,1 @@
-console.log("Loaded boot.js")
+console.debug("Loaded boot.js")

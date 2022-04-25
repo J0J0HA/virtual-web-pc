@@ -1,6 +1,5 @@
 console.output = [];
-
-const output = document.getElementById("output")
+var _console_input = "";
 
 var _log = console.log,
     _warn = console.warn,
@@ -40,21 +39,23 @@ console.to_html = function() {
     else {
       color = "l"
     }
-    html_output += "<span class='console-" + color + "'>> " + line + "</span><br>"
+    html_output += "<span class='console-" + color + "'>" + line + "</span><br>"
   }
-  return html_output
+  return html_output + '<div id="console-input">> <input type="text" value="' + _console_input + '"><span class="cursor blink">|</span></div>'
 }
 
 function update_console() {
-  output.innerHTML = console.to_html()
+  document.getElementById("console-output").innerHTML = console.to_html()
+  var input = document.querySelector("#console-input > input[type=text]")
+  input.addEventListener('input', resizeInput);
+  resizeInput.call(input);
+  function resizeInput() {
+    _console_input = this.value
+    this.style.width = this.value.length + "ch";
+  }
+  input.selectionStart = input.selectionEnd = input.value.length;
+  input.focus();
 }
-
-console.info = function() {
-    console.output.push("[INFO] " + str(arguments));
-    update_console();
-    return _log.apply(console, arguments);
-};
-console.debug("Started console listener 'info'")
 
 console.debug = function() {
     console.output.push("[DEBUG] " + str(arguments));
@@ -62,6 +63,13 @@ console.debug = function() {
     return _log.apply(console, arguments);
 };
 console.debug("Started console listener 'debug'")
+
+console.info = function() {
+    console.output.push("[INFO] " + str(arguments));
+    update_console();
+    return _log.apply(console, arguments);
+};
+console.debug("Started console listener 'info'")
 
 console.log = function() {
     console.output.push("[LOG] " + str(arguments));
@@ -84,4 +92,4 @@ console.error = function() {
 };
 console.debug("Started console listener 'error'")
 
-console.log("Loaded util.js")
+console.debug("Loaded util.js")
