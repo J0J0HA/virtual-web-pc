@@ -1,12 +1,15 @@
 <html>
   <head>
     <title id="btop-title">Please wait... | VWPC</title>
-    <script src="src/BIOS/util.js" defer onload="place_start()"></script>
+    <script src="src/BIOS/util.js"></script>
+    <script src="src/BIOS/boot.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="src/main.css">
   </head>
   <body>
     <div id="output" class="console">
       VWPC/0.0.1 -> starting...
-      > Loading content...
+      > Loading util.js
+      > Loading boot.js
     </div>
     <noscript class="console">
       > It seems that you are using a browser that doesn't support JavaScript.<br>

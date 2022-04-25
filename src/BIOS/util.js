@@ -1,4 +1,4 @@
-var console.output = [];
+console.output = [];
 
 var _log = console.log,
     _warn = console.warn,
@@ -18,3 +18,5 @@ console.error = function() {
     console.output.push({method: 'error', arguments: arguments});
     return _error.apply(console, arguments);
 };
+
+console.log("Loaded util.js")
