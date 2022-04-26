@@ -1,14 +1,15 @@
 class CustomConsole {
   elem = undefined;
-  input = false;
+  input = true;
   output = [];
   listener_id = undefined;
   current_input = "";
+  max_output = Infinity;
+  max_input = Infinity;
   command_handler = undefined;
 
-  constructor(elem, input=false) {
+  constructor(elem) {
     this.elem = elem;
-    this.input = input;
     this.update();
   }
 
@@ -21,7 +22,7 @@ class CustomConsole {
   }
 
   handler(self) {
-    if (event.key === "Enter") {
+    if (event.key == "Enter") {
       self.output.push("> " + self.current_input);
       if (self.command_handler) {
         self.command_handler(self.current_input);
@@ -30,17 +31,52 @@ class CustomConsole {
       }
       self.current_input = "";
     }
-    else if (event.key === "Shift") {
+    else if (event.key == "Escape") {
+      self.warn("Escape not yet supported")
+    }
+    else if (event.key == "ArrowUp") {
+      self.warn("Arrows not yet supported")
+    }
+    else if (event.key == "ArrowDown") {
+      self.warn("Arrows not yet supported")
+    }
+    else if (event.key == "ArrowLeft") {
+      self.warn("Arrows not yet supported")
+    }
+    else if (event.key == "ArrowRight") {
+      self.warn("Arrows not yet supported")
+    }
+    else if (event.key == "Dead") {
+      if (self.current_input.length >= self.max_input) {
+        return;
+      }
+      if (event.keyCode == 220) {
+        self.current_input += "^";
+      }
+      else if (event.keyCode == 221) {
+        self.current_input += prompt("Please retype the letter:", "`")
+      }
+    }
+    else if (["Shift", "Meta", "Control", "Alt", "AltGraph", "ContextMenu", "CapsLock", "Tab"].indexOf(event.key) != -1) {
       // Just do nothing.
     }
-    else if (event.key === "Backspace") {
+    else if (["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"].indexOf(event.key) != -1) {
+        self.warn("F-Buttons not yet supported");
+    }
+    else if (event.key == "Backspace") {
       self.current_input = self.current_input.substring(0, self.current_input.length - 1);
     }
     else if (event.key.length != 1) {
       self.warn("Ignored special key: " + event.key);
     }
     else {
-      self.current_input += event.key;
+      if (self.current_input.length >= self.max_input) {
+        return;
+      }
+      var encoded = event.key.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+        return '&#'+i.charCodeAt(0)+';';
+      });
+      self.current_input += encoded;
     }
     self.update();
   }
@@ -68,7 +104,7 @@ class CustomConsole {
   }
 
   update() {
-    while (this.output.length > 200) {
+    while (this.output.length > this.max_output) {
       this.output.shift();
     }
     this.elem.innerHTML = this.to_html()
@@ -82,6 +118,11 @@ class CustomConsole {
 
   info(msg) {
       this.output.push("[INFO] " + str(msg));
+      this.update();
+  };
+
+  write(msg) {
+      this.output.push(str(msg));
       this.update();
   };
 

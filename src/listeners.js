@@ -6,7 +6,9 @@ var listeners = {
   init: function () {
     document.body.addEventListener("keydown", function() {
       for (var listener of listeners.listeners.keydown) {
-        listener[0](...listener[1]);
+        if (listener) {
+          listener[0](...listener[1]);
+        }
       }
     })
     document.body.addEventListener("keyup", function() {
