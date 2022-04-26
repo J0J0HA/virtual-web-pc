@@ -22,7 +22,7 @@ body {
   font-size: 15px;
 }
 
-#console-input > input {
+.console-input > input {
   background-color: black;
   font-family: monospace;
   color: white;
@@ -31,7 +31,7 @@ body {
   caret-color: transparent !important;
 }
 
-#console-input > input:focus {
+.console-input > input:focus {
   outline: none;
 }
 

@@ -1,13 +1,85 @@
-console.output = [];
-var _console_input = "";
+class CustomConsole {
+  constructor(elem, input=false) {
+    this.elem = elem;
+    this.input = input;
+    this.output = [];
+    this.current_input = "";
+    // this.update();
+  }
 
-var _log = console.log,
-    _warn = console.warn,
-    _error = console.error;
+  to_html() {
+    var html_output = "";
+    var input_html = "";
+    if (this.input) {
+      input_html = '<div class="console-input">> <input type="text" value="' + this.current_input + '"><span class="cursor blink">|</span></div>'
+    }
+    for (var line of this.output) {
+      var color = "l"
+      if (line.startsWith("[INFO] ")) {
+        color = "i"
+      }
+      else if (line.startsWith("[WARN] ")) {
+        color = "w"
+      }
+      else if (line.startsWith("[ERROR] ")) {
+        color = "e"
+      }
+      html_output += "<span class='console-line-" + color + "'>" + line + "</span><br>"
+    }
+    return html_output + input_html
+  }
+
+  update() {
+    this.elem.innerHTML = this.to_html()
+    var self = this;
+    if (this.input) {
+      var input = this.elem.getElementsByTagName("input")[0]
+      input.addEventListener('input', onInput);
+      onInput.call(input);
+      function onInput() {
+        self.current_input = this.value;
+        this.style.width = this.value.length + "ch";
+        if (event.keyCode == 13) {
+          self.handler(this.current_input);
+          self.current_input = "";
+          self.update();
+        }
+      }
+      input.focus();
+    }
+    input.selectionStart = input.selectionEnd = input.value.length;
+    input.focus();
+  }
+
+  debug(msg) {
+      this.output.push("[DEBUG] " + str(msg));
+      this.update();
+  };
+
+  info(msg) {
+      this.output.push("[INFO] " + str(msg));
+      this.update();
+  };
+
+  log(msg) {
+      this.output.push("[LOG] " + str(msg));
+      this.update();
+  };
+
+  warn(msg) {
+      this.output.push("[WARN] " + str(msg));
+      this.update();
+  };
+
+  error(msg) {
+      this.output.push("[ERROR] " + str(msg));
+      this.update();
+  };
+}
 
 function str(arg) {
-  if ((arg.length == 1) || (typeof(arg) == typeof("STR"))) {
-    return arg[0]
+  if (typeof(arg) == typeof("STR")) {
+    return arg
   } else if (typeof(arg) == typeof(["LIST"])) {
     result = "["
     for (var line of arg) {
@@ -23,73 +95,5 @@ function str(arg) {
   }
   return "UNKOWN OBJECT"
 }
-
-console.to_html = function() {
-  html_output = "VWPC/0.0.1<br>";
-  for (var line of console.output) {
-    if (line.startsWith("[INFO] ")) {
-      color = "i"
-    }
-    else if (line.startsWith("[WARN] ")) {
-      color = "w"
-    }
-    else if (line.startsWith("[ERROR] ")) {
-      color = "e"
-    }
-    else {
-      color = "l"
-    }
-    html_output += "<span class='console-" + color + "'>" + line + "</span><br>"
-  }
-  return html_output + '<div id="console-input">> <input type="text" value="' + _console_input + '"><span class="cursor blink">|</span></div>'
-}
-
-function update_console() {
-  document.getElementById("console-output").innerHTML = console.to_html()
-  var input = document.querySelector("#console-input > input[type=text]")
-  input.addEventListener('input', resizeInput);
-  resizeInput.call(input);
-  function resizeInput() {
-    _console_input = this.value
-    this.style.width = this.value.length + "ch";
-  }
-  input.selectionStart = input.selectionEnd = input.value.length;
-  input.focus();
-}
-
-console.debug = function() {
-    console.output.push("[DEBUG] " + str(arguments));
-    update_console();
-    return _log.apply(console, arguments);
-};
-console.debug("Started console listener 'debug'")
-
-console.info = function() {
-    console.output.push("[INFO] " + str(arguments));
-    update_console();
-    return _log.apply(console, arguments);
-};
-console.debug("Started console listener 'info'")
-
-console.log = function() {
-    console.output.push("[LOG] " + str(arguments));
-    update_console();
-    return _log.apply(console, arguments);
-};
-console.debug("Started console listener 'log'")
-
-console.warn = function() {
-    console.output.push("[WARN] " + str(arguments));
-    update_console();
-    return _warn.apply(console, arguments);
-};
-console.debug("Started console listener 'warn'")
-
-console.error = function() {
-    console.output.push("[ERROR] " + str(arguments));
-    update_console();
-    return _error.apply(console, arguments);
-};
-console.debug("Started console listener 'error'")
 
 console.debug("Loaded util.js")
