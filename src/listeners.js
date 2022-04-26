@@ -24,8 +24,8 @@ var listeners = {
     return listeners.listeners[event].length
   },
   unlisten: function (event, id) {
-    var func = listeners.listeners[event][id];
-    listeners.listeners[event][id] = undefined;
+    var func = listeners.listeners[event][id - 1];
+    listeners.listeners[event][id - 1] = undefined;
     return func
   }
 }
