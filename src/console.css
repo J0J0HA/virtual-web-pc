@@ -1,0 +1,45 @@
+.console {
+  width: 99.5%;
+  height: 100%;
+  margin: 0px;
+  padding: 5px;
+  background-color: black;
+  font-family: monospace;
+  color: white;
+  font-size: 15px;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+}
+
+.console::-webkit-scrollbar {
+  width: 10px;
+}
+
+.console::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.console::-webkit-scrollbar-thumb {
+  background: #FFFFFF;
+}
+
+.cursor {
+  position: relative;
+  left: -3px;
+}
+
+.blink {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1
+  }
+
+  80% {
+    opacity: 0
+  }
+}
