@@ -1,5 +1,7 @@
 const title = document.getElementsByTagName("title")[0];
 const cout = new CustomConsole(document.getElementById("console-output"), true);
+cout.max_output = 100;
+cout.max_input = 100;
 cout.command_handler = function(cmd) {
   cout.write("Recived: '" + cmd + "'")
 }
