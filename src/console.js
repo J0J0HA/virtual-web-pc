@@ -57,11 +57,14 @@ class CustomConsole {
         self.current_input += prompt("Please retype the letter:", "`")
       }
     }
-    else if (["Shift", "Meta", "Control", "Alt", "AltGraph", "ContextMenu", "CapsLock", "Tab"].indexOf(event.key) != -1) {
+    else if (["Shift", "Meta", "Control", "Alt", "AltGraph", "ContextMenu", "CapsLock", "Tab", "ScrollLock", "NumLock"].indexOf(event.key) != -1) {
       // Just do nothing.
     }
+    else if (event.key == "Unrecognized") {
+      self.warn("Unknown key: " + event.keyCode)
+    }
     else if (["F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"].indexOf(event.key) != -1) {
-        self.warn("F-Buttons not yet supported");
+      self.warn("F-Buttons not yet supported");
     }
     else if (event.key == "Backspace") {
       self.current_input = self.current_input.substring(0, self.current_input.length - 1);
