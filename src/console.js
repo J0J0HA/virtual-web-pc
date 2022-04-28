@@ -150,7 +150,7 @@ class CustomConsole {
   }
 
   to_html() {
-    var html_output = "<br>VWPC-BIOS 0.0.6<br>";
+    var html_output = "<br>VWPC-BIOS 0.0.7<br>";
     var input_html = "";
     if (this.input) {
       input_html = '<div class="console-input">> <span id="input">' + this.current_input + '</span><span class="cursor blink">|</span></div>'
