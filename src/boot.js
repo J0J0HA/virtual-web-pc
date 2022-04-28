@@ -25,7 +25,10 @@ cout.command_handler = function(fcmd) {
       cout.write("");
     }
     else {
-      cout.write(arg);
+      cout.write(
+        arg.replaceAll("\\nl", "\nl")
+           .replaceAll("\\n", "\n")
+      );
     }
   }
   else if (cmd == "clear") {
