@@ -7,20 +7,29 @@
   font-family: monospace;
   color: white;
   font-size: 15px;
-  overflow-y: scroll;
+  overflow-y: hidden;
+  position: absolute;
+  bottom: 0px;
   overflow-wrap: break-word;
 }
 
-.console::-webkit-scrollbar {
-  width: 10px;
+.console-line-e {
+  color: red;
 }
 
-.console::-webkit-scrollbar-track {
-  background: #000000;
+.console-line-d {
+  color: gray;
 }
 
-.console::-webkit-scrollbar-thumb {
-  background: #FFFFFF;
+.console-line-w {
+  color: yellow;
+}
+
+.console-line-l {
+  color: white;
+}
+.console-line-i {
+  color: lightblue;
 }
 
 .cursor {

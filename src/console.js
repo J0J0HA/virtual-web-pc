@@ -7,6 +7,12 @@ class CustomConsole {
   max_output = Infinity;
   max_input = Infinity;
   command_handler = undefined;
+  log_write = true;
+  log_debug = false;
+  log_log = true;
+  log_info = true;
+  log_warn = true;
+  log_error = true;
 
   constructor(elem) {
     this.elem = elem;
@@ -22,43 +28,67 @@ class CustomConsole {
   }
 
   handler(self) {
+    if (self.current_input.endsWith("<!--EHINT-->")) {
+      while (!self.current_input.endsWith("<!--SHINT-->")) {
+        self.current_input = self.current_input.substring(0, self.current_input.length - 1);
+      }
+      self.current_input = self.current_input.substring(0, self.current_input.length - 12);
+    }
     if (event.key == "Enter") {
+      var decoded = self.current_input
+        .replaceAll("<!--SREM-->&nbsp;<!--EREM-->", " ")
+        .replaceAll("<!--SREM-->&nbsp;&nbsp;&nbsp;&nbsp;<!--EREM-->", "    ")
+        .replaceAll(/<!--SREM-->&#[0-9]+;<!--EREM-->/g, function(i) {
+          return String.fromCharCode(
+            parseInt(
+              i.replaceAll(/<!--SREM-->&#/g, "")
+               .replaceAll(/;<!--EREM-->/g, "")
+             )
+           )
+      })
       self.output.push("> " + self.current_input);
       if (self.command_handler) {
-        self.command_handler(self.current_input);
+        self.command_handler(decoded);
       } else {
         self.error("No command handler defined! Command ignored.");
       }
       self.current_input = "";
     }
     else if (event.key == "Escape") {
-      self.warn("Escape not yet supported")
+      self.current_input = "";
+    }
+    else if (event.key == "Insert") {
+      return self.warn("Insert not yet supported");
+    }
+    else if (event.key == "Delete") {
+      return self.warn("Delete not yet supported");
     }
     else if (event.key == "ArrowUp") {
-      self.warn("Arrows not yet supported")
+      return self.warn("Arrows not yet supported");
     }
     else if (event.key == "ArrowDown") {
-      self.warn("Arrows not yet supported")
+      return self.warn("Arrows not yet supported");
     }
     else if (event.key == "ArrowLeft") {
-      self.warn("Arrows not yet supported")
+      return self.warn("Arrows not yet supported");
     }
     else if (event.key == "ArrowRight") {
-      self.warn("Arrows not yet supported")
+      return self.warn("Arrows not yet supported");
     }
-    else if (event.key == "Dead") {
-      if (self.current_input.length >= self.max_input) {
-        return;
-      }
-      if (event.keyCode == 220) {
-        self.current_input += "^";
-      }
-      else if (event.keyCode == 221) {
-        self.current_input += prompt("Please retype the letter:", "`")
-      }
+    else if (event.key == "PageUp") {
+      return self.elem.scrollBy(0, -self.elem.clientHeight)
     }
-    else if (["Shift", "Meta", "Control", "Alt", "AltGraph", "ContextMenu", "CapsLock", "Tab", "ScrollLock", "NumLock"].indexOf(event.key) != -1) {
-      // Just do nothing.
+    else if (event.key == "PageDown") {
+      return self.elem.scrollBy(0, self.elem.clientHeight)
+    }
+    else if (event.key == "Home") {
+      return self.elem.scrollTo(0, 0)
+    }
+    else if (event.key == "End") {
+      return self.elem.children[self.elem.children.length - 1].scrollIntoView();
+    }
+    else if (["Shift", "Meta", "OS", "Control", "Alt", "AltGraph", "ContextMenu", "CapsLock", "ScrollLock", "NumLock"].indexOf(event.key) != -1) {
+      self.debug("Key ignored. No Typeable Key.")
     }
     else if (event.key == "Unrecognized") {
       self.warn("Unknown key: " + event.keyCode)
@@ -67,17 +97,52 @@ class CustomConsole {
       self.warn("F-Buttons not yet supported");
     }
     else if (event.key == "Backspace") {
-      self.current_input = self.current_input.substring(0, self.current_input.length - 1);
+      if (self.current_input.endsWith("<!--EREM-->")) {
+        while (!self.current_input.endsWith("<!--SREM-->")) {
+          self.current_input = self.current_input.substring(0, self.current_input.length - 1);
+        }
+        self.current_input = self.current_input.substring(0, self.current_input.length - 11);
+      }
+      else {
+        self.current_input = self.current_input.substring(0, self.current_input.length - 1);
+      }
+    }
+
+    // KEYS THAT WRITE
+
+    else if (self.current_input.replaceAll(/<!--SREM-->.*<!--EREM-->/g, ".").length >= self.max_input) {
+         return;
+    }
+    else if (event.key == "Dead" && event.keyCode == 220) {
+      self.current_input += "^";
+    }
+    else if (event.key == "Dead" && (event.keyCode != 160 && event.keyCode != 192)) {
+      self.warn("Unknown Dead, thanks to your browser. (Use Firefox)")
+    }
+    else if (event.key == "^^") {
+      self.current_input += "^";
+    }
+    else if (event.key == "´´") {
+      self.current_input += "´";
+    }
+    else if (event.key == "``") {
+      self.current_input += "`";
+    }
+    else if (event.keyCode == 160 || event.keyCode == 192) {
+      self.current_input += "<!--SHINT--> Type the letter to assing or press again: <!--EHINT-->";
+    }
+    else if (event.key == "Tab") {
+      self.current_input += "<!--SREM-->&nbsp;&nbsp;&nbsp;&nbsp;<!--EREM-->";
+    }
+    else if (event.key == " ") {
+      self.current_input += "<!--SREM-->&nbsp;<!--EREM-->";
     }
     else if (event.key.length != 1) {
       self.warn("Ignored special key: " + event.key);
     }
     else {
-      if (self.current_input.length >= self.max_input) {
-        return;
-      }
       var encoded = event.key.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
-        return '&#'+i.charCodeAt(0)+';';
+        return '<!--SREM-->&#'+i.charCodeAt(0)+';<!--EREM-->';
       });
       self.current_input += encoded;
     }
@@ -85,23 +150,34 @@ class CustomConsole {
   }
 
   to_html() {
-    var html_output = "<br>VWPC 0.0.3<br>";
+    var html_output = "<br>VWPC-BIOS 0.0.6<br>";
     var input_html = "";
     if (this.input) {
       input_html = '<div class="console-input">> <span id="input">' + this.current_input + '</span><span class="cursor blink">|</span></div>'
     }
     for (var line of this.output) {
-      var color = "l"
-      if (line.startsWith("[INFO] ")) {
+      var color = "o"
+      if (line.startsWith("[LOG]")) {
+        color = "l"
+      }
+      if (line.startsWith("[DEBUG]")) {
+        color = "d"
+      }
+      if (line.startsWith("[INFO]")) {
         color = "i"
       }
-      else if (line.startsWith("[WARN] ")) {
+      else if (line.startsWith("[WARN]")) {
         color = "w"
       }
-      else if (line.startsWith("[ERROR] ")) {
+      else if (line.startsWith("[ERROR]")) {
         color = "e"
       }
-      html_output += "<span class='console-line-" + color + "'>" + line + "</span><br>"
+      if ((color == "o" && !this.log_write) || (color == "e" && !this.log_error) || (color == "i" && !this.log_info) || (color == "l" && !this.log_log) || (color == "w" && !this.log_warn) || (color == "d" && !this.log_debug)) {
+        // Skip line
+      }
+      else {
+        html_output += "<span class='console-line-" + color + "'>" + line + "</span><br>"
+      }
     }
     return html_output + input_html + "<span class='stay-focused'></span>";
   }
@@ -115,32 +191,35 @@ class CustomConsole {
   }
 
   debug(msg) {
-      this.output.push("[DEBUG] " + str(msg));
-      this.update();
+    this.write("[DEBUG] " + str(msg));
   };
 
   info(msg) {
-      this.output.push("[INFO] " + str(msg));
-      this.update();
+    this.write("[INFO] " + str(msg));
   };
 
   write(msg) {
-      this.output.push(str(msg));
-      this.update();
+    var encoded = str(msg).replace(/[\u00A0-\u9999<>\&]/g, function(i) {
+      return '&#'+i.charCodeAt(0)+';';
+    })
+      .replaceAll("\nl ", "<hr>")
+      .replaceAll("\n ", "<br>")
+      .replaceAll("\nl", "<hr>")
+      .replaceAll("\n", "<br>")
+      .replaceAll(" ", "&nbsp;")
+    this.output.push(encoded);
+    this.update();
   };
 
   log(msg) {
-      this.output.push("[LOG] " + str(msg));
-      this.update();
+    this.write("[LOG] " + str(msg));
   };
 
   warn(msg) {
-      this.output.push("[WARN] " + str(msg));
-      this.update();
+    this.write("[WARN] " + str(msg));
   };
 
   error(msg) {
-      this.output.push("[ERROR] " + str(msg));
-      this.update();
+    this.write("[ERROR] " + str(msg));
   };
 }

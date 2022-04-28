@@ -10,13 +10,16 @@ var listeners = {
           listener[0](...listener[1]);
         }
       }
+      event.preventDefault()
     })
     document.body.addEventListener("keyup", function() {
+      var ret = null;
       for (var listener of listeners.listeners.keyup) {
         if (listener) {
-          listener[0](...listener[1]);
+          ret = listener[0](...listener[1]);
         }
       }
+      event.preventDefault()
     })
   },
   listen: function (event, func, args) {

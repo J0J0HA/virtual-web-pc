@@ -14,5 +14,5 @@ function str(arg) {
     }
     return result += "}"
   }
-  return "UNKOWN OBJECT"
+  return "Unknown object: " + arg
 }
