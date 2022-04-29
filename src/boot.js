@@ -147,7 +147,7 @@ cout.command_handler = function(fcmd) {
 cout.focus();
 
 if (window.location.hash == "#mobile") {
-  alert("mobile")
+  alert("Using mobile 0.0.3")
   var mobile_console_input = document.createElement('input');
   // mobile_console_input.style.display = "none";
   cout.unfocus();
