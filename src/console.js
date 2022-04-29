@@ -117,6 +117,9 @@ class CustomConsole {
     else if (["Shift", "Meta", "OS", "Control", "Alt", "AltGraph", "ContextMenu", "CapsLock", "ScrollLock", "NumLock"].indexOf(event.key) != -1) {
       self.debug("Key ignored. No Typeable Key.")
     }
+    else if (event.key == "Unidentified" && key.keyCode == 229) {
+      self.debug("Mobile input.")
+    }
     else if (event.key == "Unidentified") {
       self.warn("Unknown key: " + event.keyCode)
     }
