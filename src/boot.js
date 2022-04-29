@@ -147,8 +147,9 @@ cout.command_handler = function(fcmd) {
 cout.focus();
 
 if (window.location.hash == "#mobile") {
-  alert("Using mobile 0.0.7")
+  alert("Using mobile version!")
   var mobile_console_input = document.createElement('input');
+  mobile_console_input.value = ":"
   mobile_console_input.addEventListener("input", function(){
     if (this.value.startsWith(":")) {
       this.value = this.value.replace(":", "")
