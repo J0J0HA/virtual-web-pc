@@ -36,13 +36,7 @@ class CustomConsole {
   }
 
   handler(self) {
-    console.dir(self.current_input)
-    if (self.current_input.endsWith("<!--EHINT-->")) {
-      while (!self.current_input.endsWith("<!--SHINT-->")) {
-        self.current_input = self.current_input.substring(0, self.current_input.length - 1);
-      }
-      self.current_input = self.current_input.substring(0, self.current_input.length - 12);
-    }
+    self.current_input = self.current_input.replaceAll(/<!--SHINT-->.*<!--EHINT-->/g, "")
     if (event.key == "Enter") {
       var decoded = self.current_input
         .replaceAll("<!--SREM-->&nbsp;<!--EREM-->", " ")
@@ -85,7 +79,6 @@ class CustomConsole {
       self.current_input_position = self.current_input.length;
     }
     else if (event.key == "ArrowLeft") {
-      console.log(self.current_input, self.current_input_position, self.current_input.length, self.current_input.substring(self.current_input_position, self.current_input.length))
       if (self.current_input.substring(0, self.current_input_position).endsWith("<!--EREM-->")) {
         while (!self.current_input.substring(0, self.current_input_position).endsWith("<!--SREM-->")) {
           self.current_input_position --;
@@ -98,7 +91,6 @@ class CustomConsole {
       if (self.current_input_position > self.current_input.length) self.current_input_position = self.current_input.length;
     }
     else if (event.key == "ArrowRight") {
-      console.log(self.current_input, self.current_input_position, self.current_input.length, self.current_input.substring(0, self.current_input_position))
       if (self.current_input.substring(self.current_input_position, self.current_input.length).startsWith("<!--SREM-->")) {
         while (!self.current_input.substring(self.current_input_position, self.current_input.length).startsWith("<!--EREM-->")) {
           self.current_input_position ++;
@@ -191,7 +183,7 @@ class CustomConsole {
     }
     else if (event.keyCode == 160 || event.keyCode == 192) {
       self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "<!--SHINT--> Type the letter to assing or press again: <!--EHINT-->" +
+        "<!--SHINT--> Type the letter to assign or press again: <!--EHINT-->" +
         self.current_input.substring(self.current_input_position, self.current_input.length)
     }
     else if (event.key == "Tab") {

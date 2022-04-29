@@ -1,6 +1,9 @@
 function str(arg) {
   if (typeof(arg) == typeof("STR")) {
     return arg
+  }
+  else if (typeof(arg) == typeof(123)) {
+    return arg.toString();
   } else if (typeof(arg) == typeof(["LIST"])) {
     result = "["
     for (var line of arg) {

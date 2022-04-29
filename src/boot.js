@@ -4,6 +4,8 @@ cout.input = true;
 cout.max_output = 100;
 cout.max_input = 100;
 cout.first_line = "<br>VWPC-BIOS 0.0.8<br>";
+cout.current_input = "help<!--SHINT--> [HINT: Press enter to run, or press Escape to ignore.]<!--EHINT-->"
+cout.current_input_position = 4
 cout.command_handler = function(fcmd) {
   if (!fcmd) return;
   cout.debug("Ran: " + fcmd)
@@ -17,6 +19,8 @@ cout.command_handler = function(fcmd) {
       "\n help (page 1 of 1):" +
       "\nl echo - Print empty line" +
       "\n echo <str> - Print <str>" +
+      "\n js <native-code> - Run js-Code" +
+      "\n jse <native-code> - Run js-Code and print result" +
       "\n set - Settings" +
       "\n help - Views this help page." +
       "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
@@ -31,6 +35,37 @@ cout.command_handler = function(fcmd) {
         arg.replaceAll("\\nl", "\nl")
            .replaceAll("\\n", "\n")
       );
+    }
+  }
+  else if (cmd == "js") {
+    if (argl == 0) {
+      cout.error("Invalid syntax.")
+      cout.write(
+        "\n js (page 1 of 1):" +
+        "\nl js <native-code> - Run js-Code" +
+        "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
+      );
+    }
+    else {
+      eval(arg)
+    }
+  }
+  else if (cmd == "jse") {
+    if (argl == 0) {
+      cout.error("Invalid syntax.")
+      cout.write(
+        "\n jse (page 1 of 1):" +
+        "\nl jse <native-code> - Run js-Code and print result" +
+        "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
+      );
+    }
+    else {
+      try {
+        cout.write(eval(arg));
+      }
+      catch (err) {
+        cout.error(err.name + ': ' + err.message);
+      }
     }
   }
   else if (cmd == "clear") {
