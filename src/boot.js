@@ -147,25 +147,19 @@ cout.command_handler = function(fcmd) {
 cout.focus();
 
 if (window.location.hash == "#mobile") {
-  alert("Using mobile 0.0.6")
+  alert("Using mobile 0.0.7")
   var mobile_console_input = document.createElement('input');
-  // mobile_console_input.style.display = "none";
   mobile_console_input.addEventListener("input", function(){
     if (this.value.startsWith(":")) {
       this.value = this.value.replace(":", "")
-      if (this.value != this.value.toUpperCase()) {
-        cout.current_input += this.value.toUpperCase();
-      }
-      else {
-        cout.current_input += this.value.toLowerCase();
-      }
+      cout.current_input += this.value;
     }
     else {
       cout.current_input = cout.current_input.substring(0, cout.current_input.length - 1)
     }
+    cout.current_input_position = cout.current_input.length;
     cout.update()
     this.value = ":";
-    cout.current_input_position = cout.current_input.length;
   })
   document.body.prepend(mobile_console_input);
   mobile_console_input.focus();
