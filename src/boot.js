@@ -151,9 +151,9 @@ if (window.location.hash == "#mobile") {
   var mobile_console_input = document.createElement('input');
   // mobile_console_input.style.display = "none";
   cout.unfocus();
-  mobile_console_input.autocapitalize = false;
-  mobile_console_input.autocorecct = false;
-  mobile_console_input.autocomplete = false;
+  mobile_console_input.autocapitalize = "none";
+  mobile_console_input.autocorecct = "off";
+  mobile_console_input.autocomplete = "off";
   mobile_console_input.addEventListener("input", function(){
     cout.current_input += this.value;
     cout.update()
