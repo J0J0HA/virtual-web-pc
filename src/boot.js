@@ -147,10 +147,9 @@ cout.command_handler = function(fcmd) {
 cout.focus();
 
 if (window.location.hash == "#mobile") {
-  alert("Using mobile 0.0.3")
+  alert("Using mobile 0.0.4")
   var mobile_console_input = document.createElement('input');
   // mobile_console_input.style.display = "none";
-  cout.unfocus();
   mobile_console_input.addEventListener("input", function(){
     if (this.value != this.value.toUpperCase()) {
       cout.current_input += this.value.toUpperCase();
