@@ -11,6 +11,11 @@
   position: absolute;
   bottom: 0px;
   overflow-wrap: break-word;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .console-line-e {
@@ -34,7 +39,6 @@
 
 .cursor {
   position: relative;
-  left: -2px;
 }
 
 .blink {

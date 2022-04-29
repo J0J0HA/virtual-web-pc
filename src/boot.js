@@ -1,7 +1,9 @@
 const title = document.getElementsByTagName("title")[0];
-const cout = new CustomConsole(document.getElementById("console-output"), true);
+const cout = new CustomConsole(document.getElementById("console-output"));
+cout.input = true;
 cout.max_output = 100;
 cout.max_input = 100;
+cout.first_line = "<br>VWPC-BIOS 0.0.8<br>";
 cout.command_handler = function(fcmd) {
   if (!fcmd) return;
   cout.debug("Ran: " + fcmd)
@@ -17,7 +19,7 @@ cout.command_handler = function(fcmd) {
       "\n echo <str> - Print <str>" +
       "\n set - Settings" +
       "\n help - Views this help page." +
-      "\nl Running 'VWPC-BIOS' (0.0.7) by J0J0HA (GitHub) \n"
+      "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
     );
   }
   else if (cmd == "echo") {
@@ -41,7 +43,7 @@ cout.command_handler = function(fcmd) {
         "\n set (page 1 of 1):" +
         "\nl set logging <args> - Set log-types to print" +
         "\n set - Views this help page." +
-        "\nl Running 'VWPC-BIOS' (0.0.7) by J0J0HA (GitHub) \n"
+        "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
       );
     }
     else {
@@ -80,7 +82,7 @@ cout.command_handler = function(fcmd) {
             "\n Info: " + cout.log_info +
             "\n Warn: " + cout.log_warn +
             "\n Error: " + cout.log_error +
-            "\nl Running 'VWPC-BIOS' (0.0.7) by J0J0HA (GitHub) \n"
+            "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
           )
         }
         else {
@@ -96,7 +98,7 @@ cout.command_handler = function(fcmd) {
             "\n set logging <warn|warnin|warnings> [<on|enable|enabled|yes|off|disable|disabled|no>] - Allows warn-messages to print" +
             "\n set logging <error|errors> [<on|enable|enabled|yes|off|disable|disabled|no>] - Allows error-messages to print" +
             "\n set logging - Views this help page." +
-            "\nl Running 'VWPC-BIOS' (0.0.7) by J0J0HA (GitHub) \n"
+            "\nl Running 'VWPC-BIOS' (0.0.8) by J0J0HA (GitHub) \n"
           );
         }
       }
@@ -106,7 +108,6 @@ cout.command_handler = function(fcmd) {
       cout.error("Unknown command: '" + cmd + "'")
   }
 }
-cout.focus();
 
 if (window.location.hash == "#mobile") {
   alert("mobile")
@@ -124,3 +125,6 @@ if (window.location.hash == "#mobile") {
   document.body.addEventListener("focus", function() {mobile_console_input.focus(); mobile_console_input.click()})
   document.body.addEventListener("click", function() {mobile_console_input.focus(); mobile_console_input.click()})
 }
+
+cout.focus();
+title.innerHTML = "VWPC - BIOS 0.0.8"
