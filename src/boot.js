@@ -144,11 +144,16 @@ cout.command_handler = function(fcmd) {
   }
 }
 
+cout.focus();
+
 if (window.location.hash == "#mobile") {
   alert("mobile")
   var mobile_console_input = document.createElement('input');
   // mobile_console_input.style.display = "none";
   cout.unfocus();
+  mobile_console_input.autocapitalize = false;
+  mobile_console_input.autocorecct = false;
+  mobile_console_input.autocomplete = false;
   mobile_console_input.addEventListener("input", function(){
     cout.current_input += this.value;
     cout.update()
@@ -161,5 +166,4 @@ if (window.location.hash == "#mobile") {
   document.body.addEventListener("click", function() {mobile_console_input.focus(); mobile_console_input.click()})
 }
 
-cout.focus();
 title.innerHTML = "VWPC - BIOS 0.0.8"
