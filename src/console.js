@@ -129,26 +129,26 @@ class CustomConsole {
     else if (event.key == "Backspace") {
       if (self.current_input.substring(0, self.current_input_position).endsWith("<!--EREM-->")) {
         while (!self.current_input.substring(0, self.current_input_position).endsWith("<!--SREM-->")) {
-          self.current_input = self.current_input.substring(0, self.current_input_position - 1) + self.current_input.substring(self.current_input_position, self.current_input.length);
+          self.current_input = self.current_input.cutout(self.current_input_position - 1, self.current_input_position);
           self.current_input_position --;
         }
-        self.current_input = self.current_input.substring(0, self.current_input_position - 11) + self.current_input.substring(self.current_input_position, self.current_input.length);
+        self.current_input = self.current_input.cutout(self.current_input_position - 11, self.current_input_position);
         self.current_input_position -= 11;
       }
       else {
-        self.current_input = self.current_input.substring(0, self.current_input_position - 1) + self.current_input.substring(self.current_input_position, self.current_input.length);
+        self.current_input = self.current_input.cutout(self.current_input_position - 1, self.current_input_position);
         self.current_input_position --;
       }
     }
     else if (event.key == "Delete") {
       if (self.current_input.substring(self.current_input_position, self.current_input.length).startsWith("<!--SREM-->")) {
         while (!self.current_input.substring(self.current_input_position, self.current_input.length).startsWith("<!--EREM-->")) {
-          self.current_input = self.current_input.substring(0, self.current_input_position) + self.current_input.substring(self.current_input_position + 1, self.current_input.length);
+          self.current_input = self.current_input.cutout(self.current_input_position, self.current_input_position + 1);
         }
-        self.current_input = self.current_input.substring(0, self.current_input_position) + self.current_input.substring(self.current_input_position + 11, self.current_input.length);
+        self.current_input = self.current_input.cutout(self.current_input_position, self.current_input_position + 11);
       }
       else {
-        self.current_input = self.current_input.substring(0, self.current_input_position) + self.current_input.substring(self.current_input_position + 1, self.current_input.length);
+        self.current_input = self.current_input.cutout(self.current_input_position, self.current_input_position + 1);
       }
     }
 
@@ -158,47 +158,33 @@ class CustomConsole {
          return;
     }
     else if (event.key == "Dead" && event.keyCode == 220) {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "^" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input.insert(self.current_input_position, "^")
       self.current_input_position ++;
     }
     else if (event.key == "Dead" && (event.keyCode != 160 && event.keyCode != 192)) {
       self.error("Unknown Dead, thanks to your browser. (Use Firefox)")
     }
     else if (event.key == "^^") {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "^" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input.insert(self.current_input_position, "^")
       self.current_input_position ++;
     }
     else if (event.key == "´´") {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "´" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input.insert(self.current_input_position, "´")
       self.current_input_position ++;
     }
     else if (event.key == "``") {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "`" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input.insert(self.current_input_position, "`")
       self.current_input_position ++;
     }
     else if (event.keyCode == 160 || event.keyCode == 192) {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "<!--SHINT--> Type the letter to assign or press again: <!--EHINT-->" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input.insert(self.current_input_position, "<!--SHINT--> Type the letter to assign or press again: <!--EHINT-->")
     }
     else if (event.key == "Tab") {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "<!--SREM-->&nbsp;&nbsp;&nbsp;&nbsp;<!--EREM-->" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input.insert(self.current_input_position, "<!--SREM-->&nbsp;&nbsp;&nbsp;&nbsp;<!--EREM-->")
       self.current_input_position += 46;
     }
     else if (event.key == " ") {
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        "<!--SREM-->&nbsp;<!--EREM-->" +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input = self.current_input.insert(self.current_input_position, "<!--SREM-->&nbsp;<!--EREM-->")
       self.current_input_position += 28;
     }
     else if (event.key.length != 1) {
@@ -208,9 +194,7 @@ class CustomConsole {
       var encoded = event.key.replace(/[\u00A0-\u9999<>\&]/g, function(i) {
         return '<!--SREM-->&#'+i.charCodeAt(0)+';<!--EREM-->';
       });
-      self.current_input = self.current_input.substring(0, self.current_input_position) +
-        encoded +
-        self.current_input.substring(self.current_input_position, self.current_input.length)
+      self.current_input = self.current_input = self.current_input.insert(self.current_input_position, encoded)
       self.current_input_position += encoded.length;
     }
     self.update();
