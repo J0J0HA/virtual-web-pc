@@ -259,9 +259,7 @@ class CustomConsole {
     var encoded = str(msg).replace(/[\u00A0-\u9999<>\&]/g, function(i) {
       return '&#'+i.charCodeAt(0)+';';
     })
-      .replaceAll("\nl ", "<hr>")
       .replaceAll("\n ", "<br>")
-      .replaceAll("\nl", "<hr>")
       .replaceAll("\n", "<br>")
       .replaceAll(" ", "&nbsp;")
     this.output.push(encoded);
