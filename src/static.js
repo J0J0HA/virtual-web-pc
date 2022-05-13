@@ -8,7 +8,7 @@ var static = {
       string: "invalid",
       release: 1,
       patch: 1,
-      update: 14,
+      update: 15,
       stage: "alpha",
     }
   }

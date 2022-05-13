@@ -128,7 +128,7 @@ class FileStorage {
     return data.content;
   }
 
-  listDir (path) {
+  listDir (path="") {
     var data = this._getValue(path);
     if (data.type != "dir" && data.type != "system-root") {
       throw new Error("Not a dir")
@@ -142,10 +142,6 @@ class FileStorage {
         return filename.startsWith(path + "/")
       }
     );
-  }
-
-  delete (path, content) {
-    return System.deleteValue(this.module, path, content);
   }
 }
 

@@ -1,4 +1,5 @@
 const title = document.getElementsByTagName("title")[0];
+title.innerHTML = static.bios.name.full;
 
 var filestore = new FileStorage("fs:root");
 
@@ -68,5 +69,3 @@ if (window.location.hash == "#mobile") {
   document.body.addEventListener("focus", function() {mobile_console_input.focus(); mobile_console_input.click()})
   document.body.addEventListener("click", function() {mobile_console_input.focus(); mobile_console_input.click()})
 }
-
-title.innerHTML = "VWPC - BIOS 0.0.8"
