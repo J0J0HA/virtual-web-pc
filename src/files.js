@@ -21,6 +21,13 @@ class FileStorage {
     this.data = JSON.parse(
       localStorage.getItem(this.name)
     );
+    if (!this.data) {
+      this.data = {
+        "": {
+          type: "system-root"
+        }
+      };
+    }
     if (!(this.data[""] && this.data[""].type == "system-root")) {
       this.data[""] = {
         type: "system-root"
