@@ -1,6 +1,7 @@
 const title = document.getElementsByTagName("title")[0];
 
 var filestore = new FileStorage("fs:root");
+
 const cout = new CustomConsole(document.getElementById("console-output"));
 cout.input = true;
 cout.max_output = 250;
@@ -10,6 +11,7 @@ cout.current_input_position = 4
 cout.command_handler = function(fcmd) {
   if (!fcmd) return;
   cout.debug("Ran: " + fcmd)
+  console.debug("BIOS command handler recived: " + fcmd)
   args = fcmd.split(" ")
   arg = fcmd.replace(args[0] + " ", "")
   cmd = args[0]
@@ -45,7 +47,7 @@ cout.command_handler = function(fcmd) {
 cout.focus();
 
 if (window.location.hash == "#mobile") {
-  alert("Using mobile version!")
+  alert("Using mobile version! (BETA)")
   var mobile_console_input = document.createElement('input');
   mobile_console_input.value = ":"
   mobile_console_input.addEventListener("input", function(){
