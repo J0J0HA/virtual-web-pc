@@ -18,36 +18,41 @@
   user-select: none;
 }
 
-.console-line-e {
+.console-line-error {
   color: red;
 }
 
-.console-line-d {
+.console-line-debug {
   color: gray;
 }
 
-.console-line-w {
+.console-line-warn {
   color: yellow;
 }
 
-.console-line-l {
+.console-line-plain {
   color: white;
 }
-.console-line-i {
+
+.console-line-log {
+  color: white;
+}
+
+.console-line-info {
   color: lightblue;
 }
 
-.cursor {
+.console-cursor {
   position: relative;
 }
 
-.blink {
-  animation-name: blink;
+.console-blink {
+  animation-name: console-blink;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 
-@keyframes blink {
+@keyframes console-blink {
   0% {
     opacity: 1
   }

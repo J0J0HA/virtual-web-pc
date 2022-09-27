@@ -7,8 +7,7 @@ const cout = new CustomConsole(document.getElementById("console-output"));
 cout.input = true;
 cout.max_output = 250;
 cout.first_line = "<br>" + static.bios.name.full + "<br>";
-cout.current_input = "help<!--SHINT--> [HINT: Press enter to run, or press Escape to ignore.]<!--EHINT-->"
-cout.current_input_position = 4
+cout.type_input("help")
 cout.command_handler = function(fcmd) {
   if (!fcmd) return;
   cout.debug("Ran: " + fcmd)

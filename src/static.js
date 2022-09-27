@@ -8,7 +8,7 @@ var static = {
       string: "invalid",
       release: 1,
       patch: 1,
-      update: 15,
+      update: 18,
       stage: "alpha",
     }
   }
@@ -44,4 +44,30 @@ function str(arg) {
     return result += "}"
   }
   return "Unknown object: " + arg
+}
+
+function html_escape (string, cursorblink=false) {
+  string = string.replace("&", "&amp;");
+  string = string.replace(/[\u00A0-\u9999<>\&]/g,
+    function(i) {
+      return '&#'+i.charCodeAt(0)+';';
+    }
+  );
+  string = string.replace("<", "&lt;");
+  string = string.replace(">", "&gt;");
+  string = string.replace(" ", "&nbsp;");
+  string = string
+    .replaceAll('!!SHOWCURSOR:BLINKING!!', '<span class="console-cursor console-blink">|</span>')
+    .replaceAll('!!SHOWCURSOR:PAUSED!!', '<span class="console-cursor">|</span>')
+    .replaceAll('!!SHOWCURSOR!!',
+      function(focused) {
+        if (focused) {
+          return '<span class="console-cursor console-blink">|</span>'
+        }
+        else {
+          return '<span class="console-cursor">|</span>'
+        }
+      } (cursorblink)
+    )
+  return string;
 }
