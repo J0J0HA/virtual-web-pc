@@ -1,70 +1,68 @@
-const title = document.getElementsByTagName("title")[0];
-title.innerHTML = static.bios.name.full;
+async function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-var filestore = new FileStorage("fs:root");
-
-const cout = new CustomConsole(document.getElementById("console-output"));
-cout.input = true;
-cout.max_output = 250;
-cout.first_line = "<br>" + static.bios.name.full + "<br>";
-cout.type_input("help")
-cout.command_handler = function(fcmd) {
-  if (!fcmd) return;
-  cout.debug("Ran: " + fcmd)
-  console.debug("BIOS command handler recived: " + fcmd)
-  args = fcmd.split(" ")
-  arg = fcmd.replace(args[0] + " ", "")
-  cmd = args[0]
-  argl = args.length - 1
-
-  if (cmd == "help") {
-    cout.write(
-      "clear      -> delete all output\n" +
-      "js <code>  -> run <code> with javascript and echo output"
-    );
-  }
-  else if (cmd == "js") {
-    if (argl == 0) {
-      cout.error("Invalid syntax.");
-    }
-    else {
-      try {
-        cout.write(eval(arg));
-      }
-      catch (err) {
-        cout.error(err.name + ': ' + err.message);
-      }
-    }
-  }
-  else if (cmd == "clear") {
-    cout.output = [];
-  }
-  else {
-      cout.error("Unknown command: '" + cmd + "'")
+async function run_if(resultfunc, conditionfunc) {
+  if (conditionfunc()) {
+    return resultfunc();
   }
 }
 
-cout.focus();
+async function sleep_until(func, ms) {
+  return new Promise((resolve) => {
+    setInterval(() => {
+      run_if(resolve, func)
+    }, ms)
+  });
+}
 
-if (window.location.hash == "#mobile") {
-  alert("Using mobile version! (BETA)")
-  var mobile_console_input = document.createElement('input');
-  mobile_console_input.value = ":"
-  mobile_console_input.addEventListener("input", function(){
-    if (this.value.startsWith(":")) {
-      this.value = this.value.replace(":", "")
-      cout.current_input += this.value;
-    }
-    else {
-      cout.current_input = cout.current_input.substring(0, cout.current_input.length - 1)
-    }
-    cout.current_input_position = cout.current_input.length;
-    cout.update()
-    this.value = ":";
-  })
-  document.body.prepend(mobile_console_input);
-  mobile_console_input.focus();
-  mobile_console_input.click();
-  document.body.addEventListener("focus", function() {mobile_console_input.focus(); mobile_console_input.click()})
-  document.body.addEventListener("click", function() {mobile_console_input.focus(); mobile_console_input.click()})
+async function log(msg) {
+  $out.append(msg + "<br>");
+  await sleep(300);
+}
+
+async function lognl() {
+  await log("");
+}
+
+async function logdel() {
+  $out.empty();
+}
+
+async function boot() {
+  window.os = localStorage.getItem("oslink")
+  $out = $("#console-output");
+  $out.empty();
+  await sleep(1000);
+  $head = $("head");
+  await log("Booting...");
+  await lognl();
+  await log("Loading styles...");
+  await sleep(300);
+  $head.append('<!-- +<CONSOLE:STYLE> --><link rel="stylesheet" type="text/css" href="src/main.css" onload="window.__styles_loaded = true;"><!-- -<CONSOLE:STYLE> -->');
+  await sleep_until(() => {return window.__styles_loaded}, 100);
+  await sleep(400);
+  await log("Styles loaded.");
+  await lognl();
+  await log("Downloading OS...");
+  await sleep(300);
+  if (window.os) {
+    oslink = window.os;
+  } else {
+    await log("No OS to load. Booting in BIOS...")
+    oslink = "src/bios.js";
+  }
+
+  $head.append('<!-- +<OS:JS> --><script src="' + oslink + '" async defer onload="window.__os_loaded = true;"></script><!-- -<OS:JS> -->');
+  await sleep_until(() => {return $OS$ || window.__os_loaded}, 100);
+  await sleep(400);
+  await log("OS downloaded.");
+  await lognl();
+  await sleep(700);
+  if (!$OS$) {
+    await log("OS not bootable! Refresh page to retry.")
+  }
+  await log("Running OS called '" + $OS$.name + "'...");
+  await sleep(600);
+  await $OS$.boot();
 }

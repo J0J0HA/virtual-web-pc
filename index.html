@@ -3,21 +3,13 @@
   <head>
     <title>Booting...</title>
     <link rel="icon" type="image/x-icon" href="src/favicon.png">
-    <link rel="stylesheet" type="text/css" href="src/main.css">
-    <link rel="stylesheet" type="text/css" href="src/console.css">
-  </head>
-  <body>
-    <div id="console-output" class="console">
-      <noscript class="console">
-        > It seems that you are using a browser that doesn't support JavaScript.<br>
-        Please try updating your browser or using another one.
-      </noscript>
-    </div>
-    <script src="src/static.js"></script>
-    <script src="src/listeners.js"></script>
-    <script src="src/files.js"></script>
-    <script src="src/console.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="src/boot.js"></script>
-    <script>console.debug("loaded js")</script>
+  </head>
+  <body onload="boot();">
+    <div id="console-output" class="console">
+      > It seems that you are using a browser that doesn't support JavaScript.<br>
+      Please try updating your browser or using another one.
+    </div>
   </body>
 </html>
